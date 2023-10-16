@@ -12,7 +12,6 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('')
         try {
             const response = await axios.post('/auth/login',
                 JSON.stringify({ email: email, password: password }),
@@ -21,12 +20,8 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            console.log('Response:', response);
 
             navigate(from, { replace: true })
-
-            // setAuth({ isAuthenticated: true, user: response.data.User });
-            // navigate(from, { replace: true })
 
         } catch (error) {
             console.error(error);

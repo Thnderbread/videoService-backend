@@ -25,10 +25,6 @@ const Home = () => {
     const from = location.state?.from?.pathname || '/home'
 
     useEffect(() => {
-        console.log('Modal active:', modalActive)
-    }, [modalActive])
-
-    useEffect(() => {
         handleGetFiles()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -62,8 +58,6 @@ const Home = () => {
                     withCredentials: true
                 }
             );
-            // console.log(`User's files: ${userFiles}`)
-            // console.log(`Response files: ${response.data.userFiles}`)
 
             setUserFiles(prevFiles => {
                 return [...response.data.userFiles]
@@ -79,7 +73,7 @@ const Home = () => {
             if (responseCode === 401) {
                 handleSessionExpiration();
             } else {
-                alert('Sumn went wrong.')
+                alert('Something went wrong.')
             }
         }
     }
@@ -151,20 +145,11 @@ const Home = () => {
             alert("Couldn't complete the request.")
         }
 
-        console.log(`Delete function called with id ${fileId}!`)
-
         try {
             await axios.delete(`api/files/delete/${fileId}`);
-            console.log(`Done with api call! Files before state change: ${userFiles}`)
-
             setUserFiles(prevFiles => prevFiles.filter(file => file._id !== fileId));
-            console.log(`Files after state change: ${userFiles}`)
-            // window.location.reload() // trigger re-render of files >> UNNECESSARY
-
             alert('File deleted successfully.')
         } catch (error) {
-            console.error(`Error: ${error}`);
-
             if (!error.response) {
                 alert('No server response.');
             }
@@ -225,7 +210,6 @@ const Home = () => {
     }
 
     const handleDownloadFile = async (fileId, fileName) => {
-        console.log('function called!')
         if (!fileId) {
             alert('Cannot complete the request.');
             return;
@@ -244,7 +228,6 @@ const Home = () => {
             document.body.appendChild(downloadLink);
             downloadLink.click()
 
-            console.log(`Le Response: ${response}`);
             return;
         } catch (error) {
             console.error(`Error: ${error}`);
@@ -266,16 +249,13 @@ const Home = () => {
     }
 
     const showModal = (actionType, fileId, fileName) => {
-        console.log(`Action in showModal: ${actionType}`)
         setActionType(actionType)
         setOldFileName(fileName || null) // or null for upload / delete case
         setItemId(fileId || null) // or null for upload case
         setModalActive(true);
-        console.log(`Action in showModal after calling setter: ${actionType}`)
     }
 
     const handleConfirm = async (actionType, fileId) => {
-        console.log(`Action in handleConfirm: ${actionType} || ID: ${fileId}`)
         // debugger;
         if (actionType === 'rename') {
             if (newFileName.toLowerCase().split('.')[0] === oldFileName.toLowerCase().split('.')[0]) {

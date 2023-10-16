@@ -13,7 +13,6 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('')
         try {
             const response = await axios.post('/auth/register',
                 JSON.stringify({ email: email, password: password }),
@@ -22,8 +21,6 @@ const Register = () => {
                     withCredentials: true
                 }
             );
-            console.log('Response:', response);
-
             navigate(from, { replace: true })
 
         } catch (error) {
